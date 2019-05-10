@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+
+  mysql-node1:
+    image: percona/percona-xtradb-cluster
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      XTRABACKUP_PASSWORD: 123456
+      CLUSTER_NAME: PXC
+    ports:
+      - 10001:3306
+    volumes:
+      - mysql-data-node1:/var/lib/mysql
+      - mysql-data-backup:/data
+    networks:
+      - pxc-net
+
+  mysql-node2:
+    image: percona/percona-xtradb-cluster
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      XTRABACKUP_PASSWORD: 123456
+      CLUSTER_NAME: PXC
+      CLUSTER_JOIN: mysql-node1
+    ports:
+      - 10002:3306
+    volumes:
+      - mysql-data-node2:/var/lib/mysql
+    networks:
+      - pxc-net
+
+  mysql-node3:
+    image: percona/percona-xtradb-cluster
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      XTRABACKUP_PASSWORD: 123456
+      CLUSTER_NAME: PXC
+      CLUSTER_JOIN: mysql-node1
+    ports:
+      - 10003:3306
+    volumes:
+      - mysql-data-node3:/var/lib/mysql
+    networks:
+      - pxc-net
+
+  haproxy1:
+    image: haproxy-keepalived
+    privileged: true
+    ports:
+      - 7001:3306
+      - 7101:6688
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./keepalived.conf:/etc/keepalived/keepalived.conf
+    networks:
+      - pxc-net
+
+  haproxy2:
+    image: haproxy-keepalived
+    privileged: true
+    ports:
+      - 7002:3306
+      - 7102:6688
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./keepalived.conf:/etc/keepalived/keepalived.conf
+    networks:
+      - pxc-net
+
+volumes:
+  mysql-data-backup:
+  mysql-data-node1:
+  mysql-data-node2:
+  mysql-data-node3:
+
+networks:
+  pxc-net:
+      driver: bridge
