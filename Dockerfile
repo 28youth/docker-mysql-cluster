@@ -1,15 +1,14 @@
 FROM haproxy
 
-RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
-	echo "deb http://mirrors.163.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list && \
-	echo "deb http://mirrors.163.com/debian/ jessie-updates main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb http://mirrors.163.com/debian/ jessie-backports main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb-src http://mirrors.163.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb-src http://mirrors.163.com/debian/ jessie-updates main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb-src http://mirrors.163.com/debian/ jessie-backports main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib" >>/etc/apt/sources.list && \
-	echo "deb-src http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib" >>/etc/apt/sources.list
-    
+RUN echo "deb http://mirrors.aliyun.com/debian stretch main contrib non-free \
+	deb-src http://mirrors.aliyun.com/debian stretch main contrib non-free \
+	deb http://mirrors.aliyun.com/debian stretch-updates main contrib non-free \
+	deb-src http://mirrors.aliyun.com/debian stretch-updates main contrib non-free \
+	deb http://mirrors.aliyun.com/debian-security stretch/updates main contrib non-free \
+	deb-src http://mirrors.aliyun.com/debian-security stretch/updates main contrib non-free \
+	deb http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib \
+	deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" > /etc/apt/sources.list
+
 # 安装keepalived
 RUN apt-get -y update
 RUN apt-get -y install keepalived
