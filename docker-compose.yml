@@ -4,6 +4,7 @@ services:
 
   mysql-node1:
     image: percona/percona-xtradb-cluster
+    hostname: mysql-node1
     privileged: true
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -19,6 +20,7 @@ services:
 
   mysql-node2:
     image: percona/percona-xtradb-cluster
+    hostname: mysql-node2
     privileged: true
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -34,6 +36,7 @@ services:
 
   mysql-node3:
     image: percona/percona-xtradb-cluster
+    hostname: mysql-node3
     privileged: true
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -49,6 +52,7 @@ services:
 
   haproxy1:
     image: haproxy-keepalived
+    hostname: haproxy1
     privileged: true
     ports:
       - 7001:3306
@@ -61,6 +65,7 @@ services:
 
   haproxy2:
     image: haproxy-keepalived
+    hostname: haproxy2
     privileged: true
     ports:
       - 7002:3306
@@ -70,6 +75,12 @@ services:
       - ./keepalived.conf:/etc/keepalived/keepalived.conf
     networks:
       - pxc-net
+
+  mySuperApp:
+    image: "mySuperApp:latest"
+    hostname: mySuperApp
+    environment:
+      WAIT_HOSTS: mysql-node1:3306, mysql-node2:3307, mysql-node3:3308, haproxy1:7001, haproxy2:7002
 
 volumes:
   mysql-data-backup:
