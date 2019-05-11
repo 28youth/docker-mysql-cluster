@@ -76,12 +76,6 @@ services:
     networks:
       - pxc-net
 
-  mySuperApp:
-    image: "mySuperApp:latest"
-    hostname: mySuperApp
-    environment:
-      WAIT_HOSTS: mysql-node1:3306, mysql-node2:3307, mysql-node3:3308, haproxy1:7001, haproxy2:7002
-
 volumes:
   mysql-data-backup:
   mysql-data-node1:
