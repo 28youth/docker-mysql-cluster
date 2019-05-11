@@ -10,7 +10,7 @@ services:
       XTRABACKUP_PASSWORD: 123456
       CLUSTER_NAME: PXC
     ports:
-      - 10001:3306
+      - 3306:3306
     volumes:
       - mysql-data-node1:/var/lib/mysql
       - mysql-data-backup:/data
@@ -26,7 +26,7 @@ services:
       CLUSTER_NAME: PXC
       CLUSTER_JOIN: mysql-node1
     ports:
-      - 10002:3306
+      - 3307:3306
     volumes:
       - mysql-data-node2:/var/lib/mysql
     networks:
@@ -41,7 +41,7 @@ services:
       CLUSTER_NAME: PXC
       CLUSTER_JOIN: mysql-node1
     ports:
-      - 10003:3306
+      - 3308:3306
     volumes:
       - mysql-data-node3:/var/lib/mysql
     networks:
